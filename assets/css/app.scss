@@ -189,3 +189,16 @@ body {
     }
   }
 }
+
+.github {
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+
+  svg {
+    border: 0;
+    height: 2em;
+    width: 2em;
+    fill: rgba(#fff, .8);
+  }
+}
