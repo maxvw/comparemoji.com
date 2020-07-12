@@ -1,0 +1,18 @@
+<section class="messenger">
+  <ol class="messages">
+    <%= for {platform, title} <- supported_platforms() do %>
+      <li class="message">
+        <p class="body"><%= raw formatted(@query, platform: platform) %></p>
+        <cite class="author"><%= title %></cite>
+        <time class="when">1m</time>
+      </li>
+    <% end %>
+  </ol>
+
+  <form class="composer" phx-change="preview">
+    <label for="q">Chat:</label>
+    <input type="text" id="q" name="q" value="<%= @query %>" placeholder="Type something here..." maxlength="<%= max_text_size() %>" autocomplete="off" autofocus />
+    <button type="submit">Send</button>
+    <span class="counter"><%= max_text_size() - String.length(@query) %></span>
+  </form>
+</section>
