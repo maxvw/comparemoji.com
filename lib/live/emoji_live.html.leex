@@ -16,3 +16,11 @@
     <span class="counter"><%= max_text_size() - String.length(@query) %></span>
   </form>
 </section>
+
+<div id="emoji-images" phx-update="append">
+<%= for emoji <- @emojis do %>
+  <%= for {platform, _title} <- supported_platforms() do %>
+    <style id="<%= "#{platform}-#{emoji.unicode}" %>" type="text/css">.emoji.<%=platform%>.<%=emoji.unicode%> { background-image: url(<%=emoji.images[platform]%>) }</style>
+  <% end %>
+<% end %>
+</div>

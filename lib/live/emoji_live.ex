@@ -11,19 +11,33 @@ defmodule Comparemoji.EmojiLive do
     layout: {Comparemoji.LayoutView, "messenger.html"}
 
   def mount(%{"q" => query}, _session, socket) do
-    query = sanitize_query(query)
-    {:ok, assign(socket, query: query)}
+    {:ok, set_query(socket, query), temporary_assigns: [emojis: []]}
   end
 
   def mount(_params, _session, socket) do
     query = "Hello! 👋 🎈 🦦"
-    {:ok, assign(socket, query: query)}
+    {:ok, set_query(socket, query)}
   end
 
   def handle_event("preview", %{"q" => query}, socket) do
-    query = sanitize_query(query)
+    {:noreply, set_query(socket, query)}
+  end
 
-    {:noreply, assign(socket, query: query)}
+  defp set_query(socket, query) do
+    query = sanitize_query(query)
+    prev_emojis = socket.assigns[:prev_emojis] || []
+
+    new_emojis =
+      Emojis.find(query)
+      |> Enum.filter(&(!Enum.member?(prev_emojis, &1.unicode)))
+
+    prev_emojis =
+      new_emojis
+      |> Enum.reduce(prev_emojis, fn emoji, list ->
+        [emoji.unicode | list]
+      end)
+
+    assign(socket, query: query, prev_emojis: prev_emojis, emojis: new_emojis)
   end
 
   defp sanitize_query(query) do
