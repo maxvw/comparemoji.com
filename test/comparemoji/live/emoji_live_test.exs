@@ -13,7 +13,7 @@ defmodule Comparemoji.PageLiveTest do
 
     test "processes query parameter", %{conn: conn} do
       {:ok, _page_live, disconnected_html} = live(conn, "/?q=🎈")
-      assert disconnected_html =~ "alt=\"balloon\""
+      assert disconnected_html =~ ">balloon<"
     end
   end
 
@@ -22,7 +22,7 @@ defmodule Comparemoji.PageLiveTest do
 
     assert view
            |> element("form")
-           |> render_change(%{q: "🦦"}) =~ "alt=\"otter\""
+           |> render_change(%{q: "🦦"}) =~ ">otter<"
   end
 
   test "shows emojis for different platforms", %{conn: conn} do
