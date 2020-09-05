@@ -22,7 +22,9 @@ defmodule Comparemoji.Emojis do
           "?"
 
         _image ->
-          "<span class=\"emoji #{platform} #{emoji.unicode}\">#{emoji.description}</span>"
+          "<a href=\"https://emojipedia.org/#{emoji.unicode}\" rel=\"external\" class=\"emoji #{
+            platform
+          } #{emoji.unicode}\">#{emoji.description}</a>"
       end
 
     replace(emojis, text |> String.replace(emoji.unicode, image), opts)
